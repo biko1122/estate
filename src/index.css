@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+/*
+ * Brand tokens — swap these to re-skin the whole site for the client.
+ * Every color and font in the components comes from here.
+ */
+@theme {
+  --font-display: "Bodoni Moda", "Didot", Georgia, serif;
+  --font-sans: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink: #15191b;        /* headings, primary text, dark buttons */
+  --color-basalt: #1f2528;     /* dark sections, footer */
+  --color-paper: #ffffff;
+  --color-limestone: #f3f2ee;  /* alternate section background */
+  --color-line: #e4e1da;       /* borders and dividers */
+  --color-muted: #646a6e;      /* secondary text */
+  --color-accent: #0f6b5b;     /* CTAs and highlights */
+  --color-accent-dark: #0a5045;
+  --color-accent-soft: #e3efeb;
+  --color-accent-bright: #3fb59c; /* accent on dark backgrounds */
+  --color-sand: #b8995f;       /* ratings */
+
+  --shadow-card: 0 1px 2px rgb(21 25 27 / 0.04), 0 8px 24px -12px rgb(21 25 27 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(21 25 27 / 0.04), 0 24px 48px -20px rgb(21 25 27 / 0.28);
+  --shadow-panel: 0 30px 80px -30px rgb(21 25 27 / 0.45);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-fade-up: fade-up 0.9s var(--ease-out-soft) both;
+  --animate-fade-in: fade-in 0.6s ease both;
+  --animate-pop: pop 0.4s var(--ease-out-soft);
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes pop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.28); }
+    100% { transform: scale(1); }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+    font-feature-settings: "ss01", "tnum" 0;
+  }
+  ::selection {
+    background: var(--color-accent);
+    color: white;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  button {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-10;
+  }
+
+  /* Display type: Bodoni at optical size for headlines */
+  .font-display {
+    font-optical-sizing: auto;
+    letter-spacing: -0.015em;
+  }
+
+  .eyebrow {
+    @apply text-[0.72rem] font-semibold uppercase tracking-[0.22em];
+  }
+
+  /* The signature arch — a doorway shape, semicircular at any width */
+  .arch {
+    border-top-left-radius: 9999px;
+    border-top-right-radius: 9999px;
+    overflow: hidden;
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Scroll-reveal (see components/ui/Reveal.jsx) */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.9s var(--ease-out-soft),
+    transform 0.9s var(--ease-out-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Hide scrollbars on horizontal scrollers but keep them scrollable */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hero-zoom {
+  from { transform: scale(1.12); }
+  to { transform: scale(1.02); }
+}
